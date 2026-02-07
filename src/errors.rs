@@ -11,4 +11,10 @@ pub enum CambiarErrors {
 
     #[error("Input file not found")]
     InputNotFound,
+
+    #[error("Failed to read input file")]
+    ReadError,
+
+    #[error("Failed to write output file")]
+    WriteError,
 }

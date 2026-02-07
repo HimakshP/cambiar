@@ -1,8 +1,10 @@
 mod cli;
 mod formats;
 mod errors;
+mod engine;
 
 use cli::parse;
+use engine::io::copy_file;
 
 use crate::{errors::CambiarErrors, formats::FileFormats};
 
@@ -30,9 +32,9 @@ fn main() {
     .ok_or_else(|| {                                       // a closure containing None and returns following error
         CambiarErrors::UnsupportedFormat(                      // building the error
             args.input
-            .extension()                         // returns &OsString type
-            .and_then(|s| s.to_str())      // returns None if the option is None
-            .unwrap_or("unknown")                 // returns unknown when argument in None
+            .extension()                        // returns &OsString type
+            .and_then(|s| s.to_str())     // returns None if the option is None
+            .unwrap_or("unknown")                // returns unknown when argument in None
             .to_string(),
         )
     })?;
@@ -48,11 +50,15 @@ fn main() {
                     .to_string(),
             )
         })?;
-        
+
 
     println!("Detected formats:");
     println!("  Input:  {:?}", input_fmt);
     println!("  Output: {:?}", output_fmt);
+
+    copy_file(&args.input, &args.output)?;                    // this is temporary copy functionality        
+
+    println!("File processed successfully");
 
     Ok(())
 
