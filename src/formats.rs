@@ -5,10 +5,10 @@ pub enum FileFormats {
     Txt,
     Csv,
     Json,
-    Md
+    Md,
 }
 
-impl FileFormats{
+impl FileFormats {
     pub fn from_path(path: &Path) -> Option<Self> {
         let ext = path.extension()?.to_str()?.to_lowercase();
 

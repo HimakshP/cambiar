@@ -2,7 +2,6 @@ use thiserror::Error;
 
 #[derive(Error, Debug)]
 pub enum CambiarErrors {
-
     #[error("Unsupported file format: {0}")]
     UnsupportedFormat(String),
 
