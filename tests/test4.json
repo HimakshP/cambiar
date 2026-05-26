@@ -8,5 +8,10 @@
     "age": "22",
     "city": "mumbai",
     "name": "alice"
+  },
+  {
+    "age": "8",
+    "city": "dallas",
+    "name": "ron"
   }
 ]

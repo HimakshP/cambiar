@@ -5,6 +5,28 @@ use csv::Reader;
 use serde_json::{Map, Value};
 
 use crate::errors::CambiarErrors;
+use crate::engine::converter::Converter;
+use crate::formats::FileFormats;
+
+pub struct CsvToJson;
+
+impl Converter for CsvToJson {
+    fn input_format(&self) -> FileFormats {
+        todo!()
+    }
+
+    fn output_format(&self) -> FileFormats {
+        todo!()
+    }
+
+    fn convert(
+        &self,
+        input: &Path,
+        output: &Path,
+    ) -> Result<(), CambiarErrors> {
+        todo!()
+    }
+}
 
 pub fn csv_to_json(input: &Path, output: &Path) -> Result<(), CambiarErrors> {
     let infile = File::open(input).map_err(|_| CambiarErrors::ReadError)?;
