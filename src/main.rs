@@ -4,6 +4,7 @@ mod errors;
 mod formats;
 
 use cli::parse;
+use engine::csv_json::csv_to_json;
 use engine::io::copy_file;
 
 use crate::{errors::CambiarErrors, formats::FileFormats};
@@ -51,8 +52,16 @@ fn main() {
         println!("  Input:  {:?}", input_fmt);
         println!("  Output: {:?}", output_fmt);
 
-        copy_file(&args.input, &args.output)?; // this is temporary copy functionality        
+        // copy_file(&args.input, &args.output)?; // this is temporary copy functionality
+        match (input_fmt, output_fmt) {
+            (FileFormats::Csv, FileFormats::Json) => {
+                csv_to_json(&args.input, &args.output)?;
+            }
 
+            _ => {
+                copy_file(&args.input, &args.output)?;
+            }
+        }
         println!("File processed successfully");
 
         Ok(())
