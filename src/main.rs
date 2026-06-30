@@ -4,7 +4,8 @@ mod errors;
 mod formats;
 
 use cli::parse;
-use engine::csv_json::csv_to_json;
+use engine::converter::Converter;
+use engine::csv_json::CsvToJson;
 use engine::io::copy_file;
 
 use crate::{errors::CambiarErrors, formats::FileFormats};
@@ -17,6 +18,7 @@ fn main() {
 
     pub fn run() -> Result<(), CambiarErrors> {
         let args = parse();
+        let csv_to_json = CsvToJson;
 
         if !args.input.exists() {
             return Err(CambiarErrors::InputNotFound);
@@ -55,7 +57,7 @@ fn main() {
         // copy_file(&args.input, &args.output)?; // this is temporary copy functionality
         match (input_fmt, output_fmt) {
             (FileFormats::Csv, FileFormats::Json) => {
-                csv_to_json(&args.input, &args.output)?;
+                csv_to_json.convert(&args.input, &args.output)?;
             }
 
             _ => {
