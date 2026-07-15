@@ -8,7 +8,7 @@ use engine::converter::Converter;
 use engine::csv_json::CsvToJson;
 use engine::io::copy_file;
 
-use crate::{errors::CambiarErrors, formats::FileFormats};
+use crate::{engine::md_txt::MdtoTxt, errors::CambiarErrors, formats::FileFormats};
 
 fn main() {
     if let Err(e) = run() {
@@ -19,6 +19,7 @@ fn main() {
     pub fn run() -> Result<(), CambiarErrors> {
         let args = parse();
         let csv_to_json = CsvToJson;
+        let md_to_txt = MdtoTxt;
 
         if !args.input.exists() {
             return Err(CambiarErrors::InputNotFound);
@@ -58,6 +59,10 @@ fn main() {
         match (input_fmt, output_fmt) {
             (FileFormats::Csv, FileFormats::Json) => {
                 csv_to_json.convert(&args.input, &args.output)?;
+            }
+
+            (FileFormats::Md, FileFormats::Txt) => {
+                md_to_txt.convert(&args.input, &args.output)?;
             }
 
             _ => {
