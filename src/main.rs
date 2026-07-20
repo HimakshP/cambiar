@@ -18,22 +18,35 @@ fn main() {
 
     pub fn run() -> Result<(), CambiarErrors> {
         let args = parse();
+        if args.list_formats {
+    println!("Supported conversions:\n");
+    println!("  csv -> json");
+    println!("  md  -> txt");
+
+
+    return Ok(());
+}
+        let input = args.input
+    .ok_or_else(|| CambiarErrors::MissingInput)?;
+
+let output = args.output
+    .ok_or_else(|| CambiarErrors::MissingOutput)?;
         let csv_to_json = CsvToJson;
         let md_to_txt = MdtoTxt;
 
-        if !args.input.exists() {
+        if !input.exists() {
             return Err(CambiarErrors::InputNotFound);
         }
 
-        if args.output.exists() && !args.force {
+        if output.exists() && !args.force {
             return Err(CambiarErrors::OutputExists);
         }
 
-        let input_fmt = FileFormats::from_path(&args.input).ok_or_else(|| {
+        let input_fmt = FileFormats::from_path(&input).ok_or_else(|| {
             // a closure containing None and returns following error
             CambiarErrors::UnsupportedFormat(
                 // building the error
-                args.input
+                input
                     .extension() // returns &OsString type
                     .and_then(|s| s.to_str()) // returns None if the option is None
                     .unwrap_or("unknown") // returns unknown when argument in None
@@ -41,9 +54,9 @@ fn main() {
             )
         })?;
 
-        let output_fmt = FileFormats::from_path(&args.output).ok_or_else(|| {
+        let output_fmt = FileFormats::from_path(&output).ok_or_else(|| {
             CambiarErrors::UnsupportedFormat(
-                args.output
+                output
                     .extension()
                     .and_then(|s| s.to_str())
                     .unwrap_or("unknown")
@@ -58,16 +71,19 @@ fn main() {
         // copy_file(&args.input, &args.output)?; // this is temporary copy functionality
         match (input_fmt, output_fmt) {
             (FileFormats::Csv, FileFormats::Json) => {
-                csv_to_json.convert(&args.input, &args.output)?;
+                csv_to_json.convert(&input, &output)?;
             }
 
             (FileFormats::Md, FileFormats::Txt) => {
-                md_to_txt.convert(&args.input, &args.output)?;
+                md_to_txt.convert(&input, &output)?;
             }
 
             _ => {
-                copy_file(&args.input, &args.output)?;
-            }
+    return Err(CambiarErrors::UnsupportedConversion(
+        input_fmt,
+        output_fmt,
+    ));
+}
         }
         println!("File processed successfully");
 

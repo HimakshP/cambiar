@@ -1,5 +1,7 @@
 use thiserror::Error;
 
+use crate::formats::FileFormats;
+
 #[derive(Error, Debug)]
 pub enum CambiarErrors {
     #[error("Unsupported file format: {0}")]
@@ -16,4 +18,13 @@ pub enum CambiarErrors {
 
     #[error("Failed to write output file")]
     WriteError,
+
+    #[error("Unsupported Conversion")]
+    UnsupportedConversion(FileFormats, FileFormats),
+
+    #[error("Missing input file")]
+MissingInput,
+
+#[error("Missing output file")]
+MissingOutput,
 }

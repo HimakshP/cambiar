@@ -1,6 +1,6 @@
 use std::path::Path;
 
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Copy, Clone, PartialEq)]
 pub enum FileFormats {
     Txt,
     Csv,
