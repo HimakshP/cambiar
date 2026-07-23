@@ -3,11 +3,12 @@ mod engine;
 mod errors;
 mod formats;
 
+use crate::engine::png_jpg::JpgPng;
+use crate::{engine::md_txt::MdtoTxt, errors::CambiarErrors, formats::FileFormats};
 use cli::parse;
 use engine::converter::Converter;
 use engine::csv_json::CsvToJson;
 use engine::png_jpg::PngJpg;
-use crate::{engine::md_txt::MdtoTxt, errors::CambiarErrors, formats::FileFormats};
 
 fn main() {
     if let Err(e) = run() {
@@ -30,6 +31,7 @@ fn main() {
         let csv_to_json = CsvToJson;
         let md_to_txt = MdtoTxt;
         let png_to_jpg = PngJpg;
+        let jpg_to_png = JpgPng;
 
         if !input.exists() {
             return Err(CambiarErrors::InputNotFound);
@@ -77,6 +79,10 @@ fn main() {
 
             (FileFormats::Png, FileFormats::Jpg) => {
                 png_to_jpg.convert(&input, &output)?;
+            }
+
+            (FileFormats::Jpg, FileFormats::Png) => {
+                jpg_to_png.convert(&input, &output)?;
             }
 
             _ => {

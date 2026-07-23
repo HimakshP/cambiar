@@ -7,7 +7,7 @@ pub enum FileFormats {
     Json,
     Md,
     Png,
-    Jpg
+    Jpg,
 }
 
 impl FileFormats {
