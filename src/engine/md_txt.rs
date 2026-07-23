@@ -3,17 +3,17 @@ use pulldown_cmark::{
     TagEnd::{self},
 };
 
-use crate::{engine::converter::Converter, errors::CambiarErrors};
+use crate::{engine::converter::Converter, errors::CambiarErrors, formats::FileFormats};
 
 pub struct MdtoTxt;
 
 impl Converter for MdtoTxt {
     fn input_format(&self) -> crate::formats::FileFormats {
-        todo!()
+        FileFormats::Md
     }
 
     fn output_format(&self) -> crate::formats::FileFormats {
-        todo!()
+        FileFormats::Txt
     }
 
     fn convert(
@@ -23,9 +23,7 @@ impl Converter for MdtoTxt {
     ) -> Result<(), crate::errors::CambiarErrors> {
         let mut output_string = String::new();
 
-        let markdown =
-    std::fs::read_to_string(input)
-        .map_err(|_| CambiarErrors::ReadError)?;
+        let markdown = std::fs::read_to_string(input).map_err(|_| CambiarErrors::ReadError)?;
 
         let parser = Parser::new(&markdown);
 
@@ -63,8 +61,7 @@ impl Converter for MdtoTxt {
             }
         }
 
-        std::fs::write(output, output_string)
-    .map_err(|_| CambiarErrors::WriteError)?;
+        std::fs::write(output, output_string).map_err(|_| CambiarErrors::WriteError)?;
 
         Ok(())
     }

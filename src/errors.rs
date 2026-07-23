@@ -23,8 +23,8 @@ pub enum CambiarErrors {
     UnsupportedConversion(FileFormats, FileFormats),
 
     #[error("Missing input file")]
-MissingInput,
+    MissingInput,
 
-#[error("Missing output file")]
-MissingOutput,
+    #[error("Missing output file")]
+    MissingOutput,
 }

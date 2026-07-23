@@ -6,8 +6,7 @@ mod formats;
 use cli::parse;
 use engine::converter::Converter;
 use engine::csv_json::CsvToJson;
-use engine::io::copy_file;
-
+use engine::png_jpg::PngJpg;
 use crate::{engine::md_txt::MdtoTxt, errors::CambiarErrors, formats::FileFormats};
 
 fn main() {
@@ -19,20 +18,18 @@ fn main() {
     pub fn run() -> Result<(), CambiarErrors> {
         let args = parse();
         if args.list_formats {
-    println!("Supported conversions:\n");
-    println!("  csv -> json");
-    println!("  md  -> txt");
+            println!("Supported conversions:\n");
+            println!("  csv -> json");
+            println!("  md  -> txt");
 
+            return Ok(());
+        }
+        let input = args.input.ok_or_else(|| CambiarErrors::MissingInput)?;
 
-    return Ok(());
-}
-        let input = args.input
-    .ok_or_else(|| CambiarErrors::MissingInput)?;
-
-let output = args.output
-    .ok_or_else(|| CambiarErrors::MissingOutput)?;
+        let output = args.output.ok_or_else(|| CambiarErrors::MissingOutput)?;
         let csv_to_json = CsvToJson;
         let md_to_txt = MdtoTxt;
+        let png_to_jpg = PngJpg;
 
         if !input.exists() {
             return Err(CambiarErrors::InputNotFound);
@@ -65,8 +62,8 @@ let output = args.output
         })?;
 
         println!("Detected formats:");
-        println!("  Input:  {:?}", input_fmt);
-        println!("  Output: {:?}", output_fmt);
+        println!("  Input:  {}", input_fmt);
+        println!("  Output: {}", output_fmt);
 
         // copy_file(&args.input, &args.output)?; // this is temporary copy functionality
         match (input_fmt, output_fmt) {
@@ -78,14 +75,20 @@ let output = args.output
                 md_to_txt.convert(&input, &output)?;
             }
 
+            (FileFormats::Png, FileFormats::Jpg) => {
+                png_to_jpg.convert(&input, &output)?;
+            }
+
             _ => {
-    return Err(CambiarErrors::UnsupportedConversion(
-        input_fmt,
-        output_fmt,
-    ));
-}
+                return Err(CambiarErrors::UnsupportedConversion(input_fmt, output_fmt));
+            }
         }
-        println!("File processed successfully");
+        println!(
+            "✓ Converted {} → {}\n  Output: {}",
+            input_fmt,
+            output_fmt,
+            output.display()
+        );
 
         Ok(())
     }

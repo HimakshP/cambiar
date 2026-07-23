@@ -16,15 +16,12 @@ pub struct Cli {
     ///output file path
     pub output: Option<PathBuf>,
 
-
     #[arg(short, long)]
     pub force: bool,
 
     /// List all supported file conversions
-#[arg(long)]
-pub list_formats: bool,
-
-    
+    #[arg(long)]
+    pub list_formats: bool,
 }
 
 pub fn parse() -> Cli {
