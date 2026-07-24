@@ -22,9 +22,10 @@ fn main() {
 
             return Ok(());
         }
-        let input = args.input.ok_or_else(|| CambiarErrors::MissingInput)?;
 
-        let output = args.output.ok_or_else(|| CambiarErrors::MissingOutput)?;
+        let input = args.input.ok_or(CambiarErrors::MissingInput)?;
+        let output = args.output.ok_or(CambiarErrors::MissingOutput)?;
+
         let csv_to_json = CsvToJson;
         let md_to_txt = MdtoTxt;
         let png_to_jpg = PngJpg;

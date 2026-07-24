@@ -2,6 +2,12 @@
 name = "cambiar"
 version = "0.1.0"
 edition = "2024"
+description = "A lightweight CLI for converting between common file formats"
+license = "MIT"
+repository = "https://github.com/HimakshP/cambiar"
+readme = "README.md"
+keywords = ["cli", "converter", "file-converter", "rust"]
+categories = ["command-line-utilities"]
 
 [dependencies]
 assert_cmd = "2.2.2"

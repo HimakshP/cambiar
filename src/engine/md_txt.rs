@@ -29,10 +29,7 @@ impl Converter for MdtoTxt {
 
         for event in parser {
             match event {
-                Event::Start(tag) => match tag {
-                    Tag::Item => output_string.push_str("• "),
-                    _ => {}
-                },
+                Event::Start(Tag::Item) => output_string.push_str("• "),
 
                 Event::End(tag) => match tag {
                     TagEnd::Paragraph => output_string.push_str("\n\n"),
@@ -54,8 +51,8 @@ impl Converter for MdtoTxt {
                 pulldown_cmark::Event::DisplayMath(cow_str) => output_string.push_str(&cow_str),
                 pulldown_cmark::Event::Html(_) => {}
                 pulldown_cmark::Event::InlineHtml(_) => {}
-                pulldown_cmark::Event::SoftBreak => output_string.push_str("\n"),
-                pulldown_cmark::Event::HardBreak => output_string.push_str("\n"),
+                pulldown_cmark::Event::SoftBreak => output_string.push('\n'),
+                pulldown_cmark::Event::HardBreak => output_string.push('\n'),
                 pulldown_cmark::Event::Rule => output_string.push_str("------------------"),
                 _ => {}
             }
