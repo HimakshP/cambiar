@@ -1,15 +1,11 @@
 mod cli;
-mod engine;
-mod errors;
-mod formats;
 
-use crate::engine::png_jpg::JpgPng;
-use crate::{engine::md_txt::MdtoTxt, errors::CambiarErrors, formats::FileFormats};
+use cambiar::engine::{
+    converter::Converter, csv_json::CsvToJson, html_md::HtmlToMd, md_txt::MdtoTxt, png_jpg::JpgPng,
+    png_jpg::PngJpg,
+};
+use cambiar::{errors::CambiarErrors, formats::FileFormats};
 use cli::parse;
-use engine::converter::Converter;
-use engine::csv_json::CsvToJson;
-use engine::png_jpg::PngJpg;
-use engine::html_md::HtmlToMd;
 
 fn main() {
     if let Err(e) = run() {
