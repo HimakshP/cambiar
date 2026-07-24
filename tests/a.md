@@ -1,2 +1,0 @@
-hello rust
-lets rust
