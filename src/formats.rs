@@ -8,6 +8,7 @@ pub enum FileFormats {
     Md,
     Png,
     Jpg,
+    Html,
 }
 
 impl FileFormats {
@@ -21,6 +22,7 @@ impl FileFormats {
             "md" => Some(Self::Md),
             "png" => Some(Self::Png),
             "jpg" | "jpeg" => Some(Self::Jpg),
+            "html" | "htm" => Some(Self::Html),
             _ => None,
         }
     }
@@ -33,8 +35,9 @@ impl fmt::Display for FileFormats {
             FileFormats::Json => write!(f, "JSON"),
             FileFormats::Txt => write!(f, "Text"),
             FileFormats::Md => write!(f, "Markdown"),
-            FileFormats::Png => write!(f, "Png"),
-            FileFormats::Jpg => write!(f, "Jpg"),
+            FileFormats::Png => write!(f, "PNG"),
+            FileFormats::Jpg => write!(f, "JPG"),
+            FileFormats::Html => write!(f, "HTML"),
         }
     }
 }

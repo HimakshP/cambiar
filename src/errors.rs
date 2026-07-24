@@ -27,4 +27,7 @@ pub enum CambiarErrors {
 
     #[error("Missing output file")]
     MissingOutput,
+
+    #[error("Unexpected error")]
+    ConverterError,
 }

@@ -9,6 +9,7 @@ use cli::parse;
 use engine::converter::Converter;
 use engine::csv_json::CsvToJson;
 use engine::png_jpg::PngJpg;
+use engine::html_md::HtmlToMd;
 
 fn main() {
     if let Err(e) = run() {
@@ -32,6 +33,7 @@ fn main() {
         let md_to_txt = MdtoTxt;
         let png_to_jpg = PngJpg;
         let jpg_to_png = JpgPng;
+        let html_to_md = HtmlToMd;
 
         if !input.exists() {
             return Err(CambiarErrors::InputNotFound);
@@ -83,6 +85,10 @@ fn main() {
 
             (FileFormats::Jpg, FileFormats::Png) => {
                 jpg_to_png.convert(&input, &output)?;
+            }
+
+            (FileFormats::Html, FileFormats::Md) => {
+                html_to_md.convert(&input, &output)?;
             }
 
             _ => {
