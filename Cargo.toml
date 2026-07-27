@@ -21,3 +21,10 @@ serde = "1.0.228"
 serde_json = "1.0.150"
 tempfile = "3.27.0"
 thiserror = "1"
+
+[dev-dependencies]
+criterion = "0.8.2"
+
+[[bench]]
+name = "csv_json"
+harness = false
