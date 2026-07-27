@@ -13,6 +13,7 @@ categories = ["command-line-utilities"]
 assert_cmd = "2.2.2"
 clap = {version = "4", features = ["derive"]}
 csv = "1.4.0"
+flamegraph = "0.6.13"
 htmd = "0.5.4"
 image = "0.25.10"
 predicates = "3.1.4"
@@ -28,3 +29,6 @@ criterion = "0.8.2"
 [[bench]]
 name = "csv_json"
 harness = false
+
+[profile.release]
+debug = true
