@@ -2,6 +2,7 @@ use std::fs::File;
 use std::path::Path;
 
 use csv::Reader;
+use serde::ser::{SerializeSeq, Serializer};
 use serde_json::{Map, Value};
 
 use crate::engine::converter::Converter;
@@ -26,7 +27,13 @@ impl Converter for CsvToJson {
 
         let headers = rdr.headers().map_err(|_| CambiarErrors::ReadError)?.clone();
 
-        let mut records = Vec::new();
+        let outfile = File::create(output).map_err(|_| CambiarErrors::WriteError)?;
+
+        let mut serializer = serde_json::Serializer::pretty(outfile);
+
+        let mut seq = serializer
+            .serialize_seq(None)
+            .map_err(|_| CambiarErrors::WriteError)?;
 
         for result in rdr.records() {
             let record = result.map_err(|_| CambiarErrors::ReadError)?;
@@ -36,12 +43,11 @@ impl Converter for CsvToJson {
             for (key, value) in headers.iter().zip(record.iter()) {
                 obj.insert(key.to_string(), Value::String(value.to_string()));
             }
-            records.push(Value::Object(obj));
+
+            let _ = seq.serialize_element(&obj);
         }
 
-        let outfile = File::create(output).map_err(|_| CambiarErrors::WriteError)?;
-
-        serde_json::to_writer_pretty(outfile, &records).map_err(|_| CambiarErrors::WriteError)?;
+        let _ = seq.end();
 
         Ok(())
     }
