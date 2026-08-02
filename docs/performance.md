@@ -50,8 +50,19 @@ The previous implementation constructed an intermediate `Vec<Value>` before seri
 | Medium | 821 KB | 25.76 ms | 31.11 MiB/s |
 | Large | 8.1 MB | 274.94 ms | 29.21 MiB/s |
 
-This converter is essentially just a wrapper around `htmd` crate. So no further optimization was done here.
+> This converter is essentially just a wrapper around `htmd` crate. So no further optimization was done here.
+
+## MD → TXT
+
+| Dataset | Size | Time | Throughput |
+|---------|-----:|-----:|-----------:|
+| Tiny | ~95 B | 4.09 µs | 23.35 MiB/s |
+| Small | ~10 KB | 14.48 µs | 712.97 MiB/s |
+| Medium | ~1 MB | 2.38 ms | 419.76 MiB/s |
+| Large | ~10 MB | 26.50 ms | 377.34 MiB/s |
+
+> **Observation:** Markdown → TXT is currently the fastest converter in Cambiar, sustaining **~377 MiB/s** on large inputs. Profiling indicates that runtime is primarily dominated by `pulldown-cmark`'s Markdown parser rather than Cambiar's wrapper logic, leaving limited opportunity for architectural optimizations within Cambiar itself.
 
 ### Next experiment
 
-Run Benchmarks and profiling for markdown to text converter. Analyse flamegraph and form optimization hypotheses for the same.
+Run Benchmarks and profiling for jpeg to png converter. Analyse flamegraph and form optimization hypotheses for the same.
