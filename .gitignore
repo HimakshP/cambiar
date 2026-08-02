@@ -2,3 +2,4 @@
 /.vscode
 perf.data
 perf.data.old
+/benches/fixtures/*

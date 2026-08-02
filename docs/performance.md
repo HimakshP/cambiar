@@ -1,12 +1,9 @@
 # Performance
 
-## Optimization Cycle
+
+## CSV → JSON
 
 ### First Cycle
-
-Changes- 
-
-• Change the convert() method to stream serialization directly, avoiding Vec declaration.
 
 Results-
 
@@ -18,7 +15,6 @@ Results-
 
 • Reduce intermediate allocations and memory footprint
 
-### CSV → JSON
 
 Benchmarks are implemented using Criterion.
 
@@ -32,7 +28,7 @@ Current benchmark inputs cover tiny, small, medium, and large CSV files to measu
 | Medium | 978 KB | 19.48 ms | 19.07 ms | 49.03 MiB/s | 50.08 MiB/s | ~2.1% faster |
 | Large | 9.6 MB | 195.31 ms | 188.07 ms | 48.83 MiB/s | 50.71 MiB/s |  ~3.8% faster |
 
-## Profiling
+### Profiling
 
 CPU profiling with `perf` and flamegraphs identified significant work in:
 
@@ -42,8 +38,20 @@ CPU profiling with `perf` and flamegraphs identified significant work in:
 - JSON serialization
 - filesystem/syscall activity
 
-The current implementation constructs an intermediate `Vec<Value>` before serialization.
+Changed the convert() method to stream serialization directly, avoiding Vec declaration.
+The previous implementation constructed an intermediate `Vec<Value>` before serialization.
+
+## HTML -> MD
+
+| Dataset | Size | Time | Throughput |
+|---------|-----:|-----:|-----------:|
+| Tiny | 99 B | 16.38 µs | 5.76 MiB/s |
+| Small | 9.6 KB | 123.22 µs | 75.42 MiB/s |
+| Medium | 821 KB | 25.76 ms | 31.11 MiB/s |
+| Large | 8.1 MB | 274.94 ms | 29.21 MiB/s |
+
+This converter is essentially just a wrapper around `htmd` crate. So no further optimization was done here.
 
 ### Next experiment
 
-Run Benchmarks and profiling for html to markdown converter. Analyse flamegraph and form optimization hypotheses for the same.
+Run Benchmarks and profiling for markdown to text converter. Analyse flamegraph and form optimization hypotheses for the same.
