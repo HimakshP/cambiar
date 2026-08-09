@@ -63,6 +63,18 @@ The previous implementation constructed an intermediate `Vec<Value>` before seri
 
 > **Observation:** Markdown → TXT is currently the fastest converter in Cambiar, sustaining **~377 MiB/s** on large inputs. Profiling indicates that runtime is primarily dominated by `pulldown-cmark`'s Markdown parser rather than Cambiar's wrapper logic, leaving limited opportunity for architectural optimizations within Cambiar itself.
 
+
+## PNG to JPG 
+
+| Dataset |Size | Time | Throughput |
+|---------|-----:|-----:|-----------:|
+| Tiny | 1.42 kB |3.92 ms | 361.56 KiB/s |
+| Small | 11 kB | 3.00 ms | 3.58 MiB/s |
+| Medium | 980 kB| 99.85 ms | 9.55 MiB/s |
+| Large | 10 MB | 403.54 ms | 24.85 MiB/s |
+
+> **Note:** The large benchmark showed a wider confidence interval than the smaller datasets, so its result has higher run-to-run variability.
+
 ### Next experiment
 
 Run Benchmarks and profiling for jpeg to png converter. Analyse flamegraph and form optimization hypotheses for the same.
