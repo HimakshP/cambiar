@@ -1,30 +1,30 @@
 use cambiar::engine::converter::Converter;
-use cambiar::engine::png_jpg::PngJpg;
+use cambiar::engine::png_jpg::JpgPng;
 
 use criterion::{BenchmarkId, Criterion, Throughput, criterion_group, criterion_main};
 
 use std::path::PathBuf;
 
-fn benchmark_png_jpg(c: &mut Criterion) {
+fn benchmark_jpg_png(c: &mut Criterion) {
     let root = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
 
     let files = [
-        ("tiny", root.join("benches/fixtures/tiny.png")),
-        ("small", root.join("benches/fixtures/small.png")),
-        ("medium", root.join("benches/fixtures/mid.png")),
-        ("large", root.join("benches/fixtures/large.png")),
+        ("tiny", root.join("benches/fixtures/tiny.jpg")),
+        ("small", root.join("benches/fixtures/small.jpg")),
+        ("medium", root.join("benches/fixtures/mid.jpg")),
+        ("large", root.join("benches/fixtures/large.jpg")),
     ];
 
-    let mut group = c.benchmark_group("png_to_jpg");
+    let mut group = c.benchmark_group("jpg_to_png");
     for (name, input) in files {
         let size = std::fs::metadata(&input).unwrap().len();
 
         group.throughput(Throughput::Bytes(size));
 
         let dir = tempfile::tempdir().unwrap();
-        let output = dir.path().join("output.jpg");
+        let output = dir.path().join("output.png");
 
-        let converter = PngJpg;
+        let converter = JpgPng;
 
         group.bench_with_input(BenchmarkId::from_parameter(name), &input, |b, input| {
             b.iter(|| {
@@ -36,5 +36,5 @@ fn benchmark_png_jpg(c: &mut Criterion) {
     group.finish();
 }
 
-criterion_group!(benches, benchmark_png_jpg);
+criterion_group!(benches, benchmark_jpg_png);
 criterion_main!(benches);

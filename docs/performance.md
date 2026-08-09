@@ -68,12 +68,23 @@ The previous implementation constructed an intermediate `Vec<Value>` before seri
 
 | Dataset |Size | Time | Throughput |
 |---------|-----:|-----:|-----------:|
-| Tiny | 1.42 kB |3.92 ms | 361.56 KiB/s |
+| Tiny | 1 kB |3.92 ms | 361.56 KiB/s |
 | Small | 11 kB | 3.00 ms | 3.58 MiB/s |
 | Medium | 980 kB| 99.85 ms | 9.55 MiB/s |
 | Large | 10 MB | 403.54 ms | 24.85 MiB/s |
 
-> **Note:** The large benchmark showed a wider confidence interval than the smaller datasets, so its result has higher run-to-run variability.
+> **Observation:** The large benchmark showed a wider confidence interval than the smaller datasets, so its result has higher run-to-run variability.
+
+## JPG to PNG
+
+| Dataset |Size | Time | Throughput |
+|---------|-----:|-----:|-----------:|
+| Tiny | 1.42 kB | 38.987 µs | 24.462 MiB/s |
+| Small | 10 kB | 87.604 µs | 108.86 MiB/s |
+| Medium | 980 kB| 5.4730 ms | 174.25 MiB/s |
+| Large | 10 MB | 1.4460 s | 6.7107 MiB/s |
+
+> **Observation:** The throughput drop from medium to large file is due to the variation in the sample fixtures for each of the benches. Image converters rely on many factors for performance rather than just file sizes.
 
 ### Next experiment
 
